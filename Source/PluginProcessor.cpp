@@ -31,6 +31,8 @@ _2020sw2_assessment1AudioProcessor::~_2020sw2_assessment1AudioProcessor()
 }
 
 //==============================================================================
+
+
 const String _2020sw2_assessment1AudioProcessor::getName() const
 {
     return JucePlugin_Name;
@@ -93,10 +95,15 @@ void _2020sw2_assessment1AudioProcessor::changeProgramName (int index, const Str
 }
 
 //==============================================================================
+void _2020sw2_assessment1AudioProcessor::updateAngleDelta()
+{
+    auto cyclesPerSample = 1000 / currentSampleRate;
+    angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
+}
 void _2020sw2_assessment1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    currentSampleRate = sampleRate;
+    updateAngleDelta();
 }
 
 void _2020sw2_assessment1AudioProcessor::releaseResources()
@@ -129,7 +136,7 @@ bool _2020sw2_assessment1AudioProcessor::isBusesLayoutSupported (const BusesLayo
 }
 #endif
 
-void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
+void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages, const AudioSourceChannelInfo& bufferToFill)
 {
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -152,9 +159,19 @@ void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffe
     // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto* channelData = buffer.getWritePointer (channel);
-
+        auto level = 0.125f;
+        auto* leftBuffer = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
+        auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);
         // ..do something to the data...
+        
+        //Generate sine wave
+        for(auto sample = 0; sample < bufferToFill.numSamples; ++sample){
+            //until the buffer is full do the following:
+            auto currentSample = (float) std::sin (currentAngle);
+            currentAngle += angleDelta;
+            leftBuffer[sample] = currentSample * level;
+            rightBuffer[sample] = currentSample * level;
+        }
     }
 }
 

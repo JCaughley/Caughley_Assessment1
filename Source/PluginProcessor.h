@@ -24,13 +24,14 @@ public:
 
     //==============================================================================
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
+    
     void releaseResources() override;
 
    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
-    void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
+    void processBlock (AudioBuffer<float>&, MidiBuffer&, const AudioSourceChannelInfo& bufferToFill);
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -54,8 +55,15 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
+    
+    void updateAngleDelta();
+    
+    double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.0;
 
 private:
+   
+    Random random;
+   
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (_2020sw2_assessment1AudioProcessor)
 };
