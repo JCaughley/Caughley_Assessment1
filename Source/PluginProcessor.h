@@ -26,12 +26,14 @@ public:
     void prepareToPlay (double sampleRate, int samplesPerBlock) override;
     
     void releaseResources() override;
+    
+    void updateAngleDelta();
 
    #ifndef JucePlugin_PreferredChannelConfigurations
     bool isBusesLayoutSupported (const BusesLayout& layouts) const override;
    #endif
 
-    void processBlock (AudioBuffer<float>&, MidiBuffer&, const AudioSourceChannelInfo& bufferToFill);
+    void processBlock (AudioBuffer<float>&, MidiBuffer&) override;
 
     //==============================================================================
     AudioProcessorEditor* createEditor() override;
@@ -56,7 +58,7 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
     
-    void updateAngleDelta();
+   
     
     double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.0;
 

@@ -106,6 +106,7 @@ void _2020sw2_assessment1AudioProcessor::prepareToPlay (double sampleRate, int s
     updateAngleDelta();
 }
 
+
 void _2020sw2_assessment1AudioProcessor::releaseResources()
 {
     // When playback stops, you can use this as an opportunity to free up any
@@ -136,7 +137,7 @@ bool _2020sw2_assessment1AudioProcessor::isBusesLayoutSupported (const BusesLayo
 }
 #endif
 
-void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages, const AudioSourceChannelInfo& bufferToFill)
+void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
     auto totalNumInputChannels  = getTotalNumInputChannels();
@@ -159,19 +160,16 @@ void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffe
     // interleaved by keeping the same state.
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
-        auto level = 0.125f;
-        auto* leftBuffer = bufferToFill.buffer->getWritePointer (0, bufferToFill.startSample);
-        auto* rightBuffer = bufferToFill.buffer->getWritePointer (1, bufferToFill.startSample);
+        auto* channelData = buffer.getWritePointer(channel);
+        auto level = 0.5f;
         // ..do something to the data...
-        
-        //Generate sine wave
-        for(auto sample = 0; sample < bufferToFill.numSamples; ++sample){
-            //until the buffer is full do the following:
+        for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
+        {
             auto currentSample = (float) std::sin (currentAngle);
             currentAngle += angleDelta;
-            leftBuffer[sample] = currentSample * level;
-            rightBuffer[sample] = currentSample * level;
+            channelData[sample] = currentSample * level;
         }
+       
     }
 }
 
