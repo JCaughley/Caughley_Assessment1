@@ -16,7 +16,7 @@
 //==============================================================================
 /**
 */
-class _2020sw2_assessment1AudioProcessorEditor  : public AudioProcessorEditor
+class _2020sw2_assessment1AudioProcessorEditor  : public AudioProcessorEditor, public Slider::Listener
 {
 public:
     _2020sw2_assessment1AudioProcessorEditor (_2020sw2_assessment1AudioProcessor&);
@@ -25,11 +25,16 @@ public:
     //==============================================================================
     void paint (Graphics&) override;
     void resized() override;
+    void sliderValueChanged (Slider * slider) override;
+    
 
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     _2020sw2_assessment1AudioProcessor& processor;
-
+    
+    Image bgImg;
+    Slider gainSlider;
+    Slider freqSlider;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (_2020sw2_assessment1AudioProcessorEditor)
 };

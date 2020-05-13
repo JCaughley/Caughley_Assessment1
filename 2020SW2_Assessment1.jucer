@@ -3,6 +3,7 @@
 <JUCERPROJECT id="zOqX4b" name="2020SW2_Assessment1" projectType="audioplug"
               jucerVersion="5.4.7" pluginFormats="buildAU,buildVST,buildVST3">
   <MAINGROUP id="snOs5d" name="2020SW2_Assessment1">
+    <GROUP id="{3EEE3BA0-09FD-8F06-2A58-C891A0374096}" name="Resources"/>
     <GROUP id="{B81C6B30-354C-32DD-71B4-E353A8B18863}" name="Source">
       <FILE id="VhRHZR" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>

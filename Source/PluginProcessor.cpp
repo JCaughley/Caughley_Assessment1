@@ -97,7 +97,7 @@ void _2020sw2_assessment1AudioProcessor::changeProgramName (int index, const Str
 //==============================================================================
 void _2020sw2_assessment1AudioProcessor::updateAngleDelta()
 {
-    auto cyclesPerSample = 1000 / currentSampleRate;
+    auto cyclesPerSample = rawFreq / currentSampleRate;
     angleDelta = cyclesPerSample * 2.0 * MathConstants<double>::pi;
 }
 void _2020sw2_assessment1AudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
@@ -149,6 +149,8 @@ void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffe
     // This is here to avoid people getting screaming feedback
     // when they first compile a plugin, but obviously you don't need to keep
     // this code if your algorithm always overwrites all the output channels.
+    //rawVolume = 0.015f;
+    
     for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
 
@@ -158,16 +160,18 @@ void _2020sw2_assessment1AudioProcessor::processBlock (AudioBuffer<float>& buffe
     // the samples and the outer loop is handling the channels.
     // Alternatively, you can process the samples with the channels
     // interleaved by keeping the same state.
+    
+    
     for (int channel = 0; channel < totalNumInputChannels; ++channel)
     {
         auto* channelData = buffer.getWritePointer(channel);
-        auto level = 0.5f;
+        
         // ..do something to the data...
         for (auto sample = 0; sample < buffer.getNumSamples(); ++sample)
         {
             auto currentSample = (float) std::sin (currentAngle);
             currentAngle += angleDelta;
-            channelData[sample] = currentSample * level;
+            channelData[sample] = currentSample * rawVolume;
         }
        
     }

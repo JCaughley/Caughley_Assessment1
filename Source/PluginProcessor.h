@@ -61,9 +61,11 @@ public:
    
     
     double currentSampleRate = 0.0, currentAngle = 0.0, angleDelta = 0.0;
-
+    double rawVolume;
+    double rawFreq = 500;
+    
 private:
-   
+    
     Random random;
    
     //==============================================================================
