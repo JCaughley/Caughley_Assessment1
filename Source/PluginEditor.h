@@ -19,7 +19,7 @@
 class _2020sw2_assessment1AudioProcessorEditor  : public AudioProcessorEditor, public Slider::Listener
 {
 public:
-    _2020sw2_assessment1AudioProcessorEditor (_2020sw2_assessment1AudioProcessor&);
+    _2020sw2_assessment1AudioProcessorEditor (_2020sw2_assessment1AudioProcessor&, AudioProcessorValueTreeState&);
     ~_2020sw2_assessment1AudioProcessorEditor();
 
     //==============================================================================
@@ -32,6 +32,9 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     _2020sw2_assessment1AudioProcessor& processor;
+    AudioProcessorValueTreeState& valueTreeState;
+std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> gainAttachment;
+    
     
     Image bgImg;
     Slider gainSlider;

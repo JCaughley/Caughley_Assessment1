@@ -21,9 +21,19 @@ _2020sw2_assessment1AudioProcessor::_2020sw2_assessment1AudioProcessor()
                       #endif
                        .withOutput ("Output", AudioChannelSet::stereo(), true)
                      #endif
-                       )
+                       ), parameters(*this, nullptr, Identifier("J's Plugin"), {
+                            std::make_unique<AudioParameterFloat>("gain",//parameter ID
+                                                                  "Gain",//parameter name
+                                                                  0.0f, //min value
+                                                                  1.0f, //max value
+                                                                  0.5f)//default value
+         
+     })
+
 #endif
 {
+    //initialisation
+    gainParameter = parameters.getRawParameterValue("gain");
 }
 
 _2020sw2_assessment1AudioProcessor::~_2020sw2_assessment1AudioProcessor()
@@ -185,7 +195,7 @@ bool _2020sw2_assessment1AudioProcessor::hasEditor() const
 
 AudioProcessorEditor* _2020sw2_assessment1AudioProcessor::createEditor()
 {
-    return new _2020sw2_assessment1AudioProcessorEditor (*this);
+    return new _2020sw2_assessment1AudioProcessorEditor (*this, parameters);
 }
 
 //==============================================================================

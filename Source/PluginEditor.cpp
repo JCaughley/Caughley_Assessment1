@@ -12,8 +12,8 @@
 #include "PluginEditor.h"
 
 //==============================================================================
-_2020sw2_assessment1AudioProcessorEditor::_2020sw2_assessment1AudioProcessorEditor (_2020sw2_assessment1AudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)
+_2020sw2_assessment1AudioProcessorEditor::_2020sw2_assessment1AudioProcessorEditor (_2020sw2_assessment1AudioProcessor& p, AudioProcessorValueTreeState& vts)
+: AudioProcessorEditor (&p),  processor (p), valueTreeState(vts)
 {
     // Make sure that before the constructor has finished, you've set the
     // editor's size to whatever you need it to be.
@@ -27,6 +27,7 @@ _2020sw2_assessment1AudioProcessorEditor::_2020sw2_assessment1AudioProcessorEdit
     gainSlider.setValue(0.5);
     gainSlider.addListener(this);
     addAndMakeVisible(gainSlider);
+   gainAttachment.reset(new juce::AudioProcessorValueTreeState::SliderAttachment(valueTreeState, "gain", gainSlider));
     
     //freqsliderstuff - slider not working yet
     freqSlider.setSliderStyle(Slider::SliderStyle::LinearVertical);

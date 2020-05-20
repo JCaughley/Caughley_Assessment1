@@ -67,6 +67,8 @@ public:
 private:
     
     Random random;
+    AudioProcessorValueTreeState parameters;
+    std::atomic<float>* gainParameter = nullptr; //this will point to the gain parameter as part of audioparameterfloat
    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (_2020sw2_assessment1AudioProcessor)
